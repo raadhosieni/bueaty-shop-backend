@@ -3,6 +3,7 @@ const router = express.Router();
 
 const userControllers = require("../controllers/userControllers");
 const admin = require("../middlewares/admin");
+const checkAuth = require("../middlewares/check-auth");
 
 //GET api/users
 //get all users
@@ -24,6 +25,11 @@ router.post("/login", userControllers.users_login);
 //@route PUT api/users/:userId
 //@access private/admin
 router.put("/:userId", admin, userControllers.users_update_user);
+
+//@desc update user profile
+//@route PUT api/users/:userId/profile
+//@access private
+router.put("/:userId/profile", checkAuth, userControllers.users_update_profile);
 
 //@desc delete user by id
 //@route DELETE api/users/:userId

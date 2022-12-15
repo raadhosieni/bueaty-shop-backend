@@ -141,6 +141,30 @@ exports.users_update_user = async (req, res) => {
   }
 };
 
+exports.users_update_profile = async (req, res) => {
+  const user = await User.findById(req.params.userId);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+
+    const hash = await bcrypt.hash(req.body.password, 10);
+
+    user.password = hash;
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+    });
+  } else {
+    res.status(500);
+    throw new Error("User not found");
+  }
+};
+
 exports.users_delete_user = async (req, res) => {
   const user = await User.findById(req.params.userId);
 
