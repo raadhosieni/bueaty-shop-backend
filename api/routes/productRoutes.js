@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const productControllers = require("../controllers/productControllers");
 const checkAuth = require("../middlewares/check-auth");
+const admin = require("../middlewares/admin");
 
 //GET /api/products
 //get all products
@@ -14,6 +15,10 @@ router.get("/:productId", productControllers.products_get_one);
 // POST /api/products
 // add new product
 router.post("/", checkAuth, productControllers.products_create_product);
+
+// DELETE /api/products/productId
+// delete product by id
+router.delete("/:productId", admin, productControllers.products_delete_product);
 
 // POST /api/products/productId/reviews
 // add reviews to exist product

@@ -92,3 +92,20 @@ exports.products_add_review = async (req, res) => {
       });
     });
 };
+
+exports.products_delete_product = async (req, res) => {
+  console.log(req.params.productId);
+  const product = await Product.findById(req.params.productId);
+
+  if (product) {
+    await product.remove();
+
+    res.status(200).json({
+      message: "Product deleted successfully",
+    });
+  } else {
+    res.status(500).json({
+      error: "Product not found",
+    });
+  }
+};

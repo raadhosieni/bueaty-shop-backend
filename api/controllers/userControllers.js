@@ -171,7 +171,7 @@ exports.users_delete_user = async (req, res) => {
   if (user) {
     await user.remove();
     res.status(200).json({
-      messsage: "User deleted successfully",
+      message: "User deleted successfully",
     });
   } else {
     res.status(500);
