@@ -43,6 +43,7 @@ const productSchema = new mongoose.Schema(
     rating: Number,
     numReviews: Number,
     reviews: [reviewSchema],
+    countInStock: Number,
   },
   { timestamps: true }
 );

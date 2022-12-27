@@ -4,26 +4,51 @@ const Product = require("../models/productModel");
 exports.products_create_product = (req, res) => {
   const product = new Product({
     _id: mongoose.Types.ObjectId(),
-    user: req.body.user,
-    name: req.body.name,
-    description: req.body.description,
-    category: req.body.category,
-    price: req.body.price,
-    image: req.body.image,
+    user: req.userData.id,
+    name: "Sample name",
+    description: "Sample description",
+    category: "Sample category",
+    price: 0,
+    image: "/images/sample.jpg",
+    size: "small",
+    brand: "Sample brand",
+    numReviews: 0,
+    countInStock: 0,
   });
 
   product
     .save()
-    .then((result) => {
-      res.status(201).json({
-        message: "product is created",
-      });
+    .then((product) => {
+      res.status(201).json(product);
     })
     .catch((err) => {
       res.status(500).json({
         error: err,
       });
     });
+};
+
+exports.products_update_product = async (req, res) => {
+  const product = await Product.findById(req.params.productId);
+
+  if (product) {
+    product.name = req.body.name || product.name;
+    product.category = req.body.category || product.category;
+    product.brand = req.body.brand || product.brand;
+    product.description = req.body.description || product.description;
+    product.price = req.body.price || product.price;
+    product.countInStock = req.body.countInStock || product.countInStock;
+    product.size = req.body.size || product.size;
+    product.image = req.body.image || product.image;
+
+    const updatedProduct = await product.save();
+
+    res.status(200).json(updatedProduct);
+  } else {
+    res.status(500).json({
+      error: "Product not found",
+    });
+  }
 };
 
 exports.products_get_all = (req, res) => {
@@ -94,7 +119,6 @@ exports.products_add_review = async (req, res) => {
 };
 
 exports.products_delete_product = async (req, res) => {
-  console.log(req.params.productId);
   const product = await Product.findById(req.params.productId);
 
   if (product) {

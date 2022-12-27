@@ -20,6 +20,10 @@ router.post("/", checkAuth, productControllers.products_create_product);
 // delete product by id
 router.delete("/:productId", admin, productControllers.products_delete_product);
 
+// UPDATE /api/products/productId
+// update product by id
+router.put("/:productId", admin, productControllers.products_update_product);
+
 // POST /api/products/productId/reviews
 // add reviews to exist product
 router.post("/:productId/reviews", productControllers.products_add_review);
